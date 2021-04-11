@@ -1,0 +1,18 @@
+dist: xenial
+language: cpp
+compiler: clang
+addons:
+  apt:
+    packages:
+    - libboost-test-dev
+    - libspdlog-dev
+script:
+- cmake .
+- cmake --build .
+- cmake --build . --target test
+- cmake --build . --target package
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -f -T first-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uganjelamj98:$BINTRAY_API_KEY "https://api.bintray.com/content/ganjela98/otus-cpp/homework/$TRAVIS_BUILD_NUMBER/first-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
